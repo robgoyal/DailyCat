@@ -6,13 +6,13 @@
 #         Pass some input when asked for 
 
 # Giphy API: https://github.com/Giphy/GiphyAPI
+# apiKey is a public beta key. Follow their guidelines
 
 import fbchat
 import getpass
 import urllib
 import simplejson as json
-import sys
-import os
+
 
 # Gif topic to search for
 gifTopic = raw_input("Enter gif to search for: ").split()
@@ -25,6 +25,7 @@ gifQuery = "&tag=" + "+".join(gifTopic)
 # Concactenate formatted url for gif search
 apiURL = api + apiKey + gifQuery
 
+# JSON response
 response = urllib.urlopen(apiURL)
 data = json.load(response)
 
@@ -38,10 +39,9 @@ password = getpass.getpass("Password: ")
 # Create facebook chat client
 client = fbchat.Client(userid, password, debug = False)
 
-# Retreive user id for friend
-# Could check for correct friend and option to send to multiple friends but lazy
+# Retrieve user id for friend
 friendName = raw_input("FRIEND NAME: ")
 friend = client.getUsers(friendName)[0].uid
 
-# Send gif image link to friend
+# Send gif image link with optional message
 client.sendRemoteImage(friend, message = "", image = gifURL)
